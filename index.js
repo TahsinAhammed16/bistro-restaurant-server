@@ -24,10 +24,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const menuCollection = client.db("bistroRestaurantDB").collection("menu");
+    const menusCollection = client.db("bistroRestaurantDB").collection("menus");
+    const cartsCollection = client.db("bistroRestaurantDB").collection("carts");
 
-    app.get("/menu", async (req, res) => {
-      const result = await menuCollection.find().toArray();
+    app.get("/menus", async (req, res) => {
+      const result = await menusCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/carts", async (req, res) => {
+      const cart = req.body;
+      const result = await cartsCollection.insertOne(cart);
       res.send(result);
     });
 
