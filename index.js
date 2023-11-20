@@ -26,6 +26,14 @@ async function run() {
 
     const menusCollection = client.db("bistroRestaurantDB").collection("menus");
     const cartsCollection = client.db("bistroRestaurantDB").collection("carts");
+    const usersCollection = client.db("bistroRestaurantDB").collection("users");
+
+    // users related api
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
 
     app.get("/menus", async (req, res) => {
       const result = await menusCollection.find().toArray();
@@ -47,7 +55,7 @@ async function run() {
 
     app.delete("/carts/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await cartsCollection.deleteOne(query);
       res.send(result);
     });
